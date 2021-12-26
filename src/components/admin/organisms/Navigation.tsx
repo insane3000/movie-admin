@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 // *Icons
 import { MdLocalMovies } from "react-icons/md";
+import { BsCameraVideoFill } from "react-icons/bs";
 import { FaUserEdit } from "react-icons/fa";
 import { MdBackup } from "react-icons/md";
 import { ImExit } from "react-icons/im";
@@ -105,6 +106,10 @@ const Navigation = () => {
       <NavLink className="navLink" to="/admin/">
         <MdLocalMovies className="sysIconNav" />
         <span className="text none">Media</span>
+      </NavLink>
+      <NavLink className="navLink" to="/admin/series">
+        <BsCameraVideoFill className="sysIconNav" />
+        <span className="text none">Series</span>
       </NavLink>
       <NavLink className="navLink" to="/admin/clients">
         <FaUserEdit className="sysIconNav" />
