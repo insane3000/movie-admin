@@ -10,10 +10,10 @@ import Clients from "components/admin/pages/Clients";
 import Backup from "components/admin/pages/Backup";
 
 import AddMedia from "components/admin/organisms/AddMedia";
-import AddSeries from "components/admin/organisms/AddSeries";
+import AddSerie from "components/admin/organisms/AddSerie";
 import AddEpisode from "components/admin/organisms/AddEpisode";
 import UpdateMedia from "components/admin/organisms/UpdateMedia";
-import UpdateSeries from "components/admin/organisms/UpdateSeries";
+import UpdateSerie from "components/admin/organisms/UpdateSerie";
 import UpdateEpisode from "components/admin/organisms/UpdateEpisode";
 
 import AddClient from "components/admin/organisms/AddClient";
@@ -42,12 +42,15 @@ const Admin = () => {
         <Route path="/" element={<Media />} />
         <Route path="/add-media" element={<AddMedia />} />
         <Route path="/update-media/:id" element={<UpdateMedia />} />
+
         <Route path="/series" element={<Series />} />
-        <Route path="/add-series" element={<AddSeries />} />
-        <Route path="/update-series/:id" element={<UpdateSeries />} />
-        <Route path="/episodes" element={<Episodes />} />
-        <Route path="/add-episode" element={<AddEpisode />} />
+        <Route path="/add-serie" element={<AddSerie />} />
+        <Route path="/update-serie/:id" element={<UpdateSerie />} />
+
+        <Route path="/serie-episodes/:id" element={<Episodes />} />
+        <Route path="/add-episode/:id" element={<AddEpisode />} />
         <Route path="/update-episode/:id" element={<UpdateEpisode />} />
+
         <Route path="/clients" element={<Clients />} />
         <Route path="/create-user" element={<AddClient />} />
         <Route path="/update-user/:id" element={<UpdateClient />} />

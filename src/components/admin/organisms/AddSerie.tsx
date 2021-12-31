@@ -37,7 +37,7 @@ const SearchSt = styled.div`
         width: 100%;
         height: 3rem;
         display: grid;
-        grid-template-columns: 15% 15% 25% calc(25% - 5rem) 20%;
+        grid-template-columns: 15% 35% 25% calc(15% - 4rem) 10%;
         grid-template-rows: 100%;
         gap: 1rem;
         justify-content: center;
@@ -206,26 +206,26 @@ const SearchSt = styled.div`
   }
 `;
 const Search = () => {
-  const fileRef = useRef<any>();
+  //   const fileRef = useRef<any>();
   let navigate = useNavigate();
   const app = useSelector((store: StoreInterface) => store.app);
   const [language, setLanguage] = useState("latino");
   //   const [folder, setFolder] = useState<any>("estrenos");
   const [file, setFile] = useState<any>();
-  const [title, setTitle] = useState<any>("");
-  const [originalTitle, setOriginalTitle] = useState<any>("");
+  const [title, setTitle] = useState("");
+  const [originalTitle, setOriginalTitle] = useState("");
   const [rating, setRating] = useState<any>(0);
-  const [year, setYear] = useState<any>("");
-  const [genre, setGenre] = useState<any>("");
-  const [time, setTime] = useState<any>("");
-  const [actors, setActors] = useState<any>("");
-  const [synopsis, setSynopsis] = useState<any>("");
-  const [link, setLink] = useState<any>("");
+  const [year, setYear] = useState("");
+  const [genre, setGenre] = useState("");
+  const [time, setTime] = useState("");
+  const [actors, setActors] = useState("");
+  const [synopsis, setSynopsis] = useState("");
+  //   const [link, setLink] = useState<any>("");
   //   const [server, setServer] = useState<any>("backblaze");
   const [available, setAvailable] = useState<any>(true);
   // const [alertImg, setAlertImg] = useState<any>(false);
 
-//   console.log(language);
+  //   console.log(language);
 
   // !Handle Change file
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -282,10 +282,10 @@ const Search = () => {
     let value = e.currentTarget.value;
     setSynopsis(value);
   };
-  const handleLink = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.currentTarget.value;
-    setLink(value);
-  };
+  //   const handleLink = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     let value = e.currentTarget.value;
+  //     setLink(value);
+  //   };
   //   const handleServer = (e: React.ChangeEvent<HTMLSelectElement>) => {
   //     let value = e.currentTarget.value;
   //     setServer(value);
@@ -295,6 +295,8 @@ const Search = () => {
     setAvailable(value);
   };
   // console.log(available);
+  // !toast
+  const saved = () => toast.success("Guardado.");
   // !Handle Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -310,7 +312,7 @@ const Search = () => {
     formData.append("time", time);
     formData.append("actors", actors);
     formData.append("synopsis", synopsis);
-    formData.append("link", link);
+    //     formData.append("link", link);
     formData.append("file", file);
     //     formData.append("server", server);
     formData.append("available", available);
@@ -330,8 +332,6 @@ const Search = () => {
         }
       });
   };
-  // !toast
-  const saved = () => toast.success("Guardado.");
 
   return (
     <SearchSt>
@@ -471,7 +471,7 @@ const Search = () => {
           <div className="input-form-container">
             <span className="label">Poster:</span>
             <input
-              ref={fileRef}
+              //       ref={fileRef}
               name="file"
               className="input-form "
               type="file"

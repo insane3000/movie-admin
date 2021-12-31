@@ -214,7 +214,7 @@ const Search = () => {
   const [season, setSeason] = useState<any>("");
   const [episode, setEpisode] = useState<any>("");
   const [file, setFile] = useState<any>();
-  const [link, setLink] = useState<any>("");
+  const [link, setLink] = useState("");
   const [available, setAvailable] = useState<any>(true);
 
   // !Handle Change inputs
@@ -240,12 +240,14 @@ const Search = () => {
   };
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.currentTarget.files?.[0];
+//     console.log(value);
     setFile(value);
   };
   // !Handle Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let formData = new FormData();
+    formData.append("serieID", `${params.id}`);
     formData.append("language", language);
     formData.append("season", season);
     formData.append("episode", episode);
@@ -257,7 +259,7 @@ const Search = () => {
     formData.append("imageS", "");
     await axios
       //       .put(`${process.env.REACT_APP_BACKEND_URL}/series/${params.id}`, formData, {
-      .put(`${process.env.REACT_APP_BACKEND_URL}/series/61c7c4c852205c187aa70bdd`, formData, {
+      .post(`${process.env.REACT_APP_BACKEND_URL}/episodes`, formData, {
         headers: {
           authorization: `Bearer ${app.login.token}`,
           id: `${app.login.user}`,

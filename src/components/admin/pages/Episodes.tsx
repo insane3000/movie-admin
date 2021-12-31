@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import toast from "react-hot-toast";
 // *Icons
 import EditIcon from "icons/EditIcon";
@@ -233,7 +233,7 @@ const TableSt = styled.div`
   overflow: visible;
   .tRow {
     display: grid;
-    grid-template-columns: 4% calc(21% - 1.5rem) 10% 10% 40% 5% 5% 5%;
+    grid-template-columns: 4% 10% 10% calc(11% - 1.5rem) 50% 5% 5% 5%;
     grid-template-rows: 100%;
     column-gap: 0.2rem;
     justify-content: center;
@@ -291,7 +291,7 @@ const TableSt = styled.div`
       .afuera {
         /* border: 0.0625rem solid white; */
         border-radius: 0.2rem;
-        width: 6.25rem;
+        width: 10rem;
         height: auto;
         display: none;
         position: absolute;
@@ -388,6 +388,7 @@ interface EpisodeIT {
 }
 type Episodes = [EpisodeIT];
 const Search = () => {
+  const params = useParams();
   let location = useLocation();
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -446,10 +447,12 @@ const Search = () => {
       `/admin?page=1&folder=${folder}&title=${title}&available=${value}&sortQuery=${sortQuery}&ascDesc=${ascDesc}`
     );
   };
+  //! Funtion for sorting
+
   // !Fetching Function
   const fetchData = (
     pageParams: any,
-    folderParams: any,
+    //     serieIDParams: any,
     titleParams: any,
     availableParams: any,
     sortQueryParams: any,
@@ -458,7 +461,7 @@ const Search = () => {
     setSpinner(true);
     axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/episodes-admin/61c7c4c852205c187aa70bdd?page=${pageParams}&limit=17&folder=${folderParams}&title=${titleParams}&available=${availableParams}&sortQuery=${sortQueryParams}&ascDesc=${ascDescParams}`,
+        `${process.env.REACT_APP_BACKEND_URL}/episodes-admin/?page=${pageParams}&limit=17&serieID=${params.id}&title=${titleParams}&available=${availableParams}&sortQuery=${sortQueryParams}&ascDesc=${ascDescParams}`,
         {
           headers: {
             authorization: `Bearer ${app.login.token}`,
@@ -468,12 +471,11 @@ const Search = () => {
         }
       )
       .then(function (response) {
-        setState(response.data.seasons);
-        // setTotalPages(response.data.totalPages);
-        // setDocs(response.data.totalDocs);
+        setState(response.data.docs);
+        setTotalPages(response.data.totalPages);
+        setDocs(response.data.totalDocs);
         setSpinner(false);
-
-        console.log(response);
+        // console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -487,14 +489,14 @@ const Search = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const pageParams = params.get("page") ? params.get("page") : 1;
-    const folderParams = params.get("folder") ? params.get("folder") : "";
+    //     const folderParams = params.get("folder") ? params.get("folder") : "";
     const titleParams = params.get("title") ? params.get("title") : "";
     const availableParams = params.get("available") ? params.get("available") : "true";
     const sortQueryParams = params.get("sortQuery") ? params.get("sortQuery") : "createdAt";
     const ascDescParams = params.get("ascDesc") ? params.get("ascDesc") : "desc";
 
     setPageState(pageParams);
-    setFolder(folderParams);
+    //     setFolder(folderParams);
     setTitle(titleParams);
     setAvailable(availableParams);
     setSortQuery(sortQueryParams);
@@ -503,7 +505,7 @@ const Search = () => {
     // !Fetching Data whit params
     fetchData(
       pageParams,
-      folderParams,
+      //       folderParams,
       titleParams,
       availableParams,
       sortQueryParams,
@@ -521,7 +523,8 @@ const Search = () => {
     clearTimeout(timerRef.current);
     if (title.length >= 1) {
       timerRef.current = setTimeout(
-        () => navigate(`/admin?page=1&folder=${folder}&title=${value}&available=${available}`),
+        () =>
+          navigate(`/episodes-admin?page=1&folder=${folder}&title=${value}&available=${available}`),
         500
       );
     }
@@ -546,7 +549,7 @@ const Search = () => {
   // !Delete Movie
   const handleDelete = async (id: string) => {
     await axios
-      .delete(`${process.env.REACT_APP_BACKEND_URL}/episodes-admin/${id}`, {
+      .delete(`${process.env.REACT_APP_BACKEND_URL}/episodes/${id}`, {
         headers: {
           authorization: `Bearer ${app.login.token}`,
           id: `${app.login.user}`,
@@ -554,7 +557,9 @@ const Search = () => {
         },
       })
       .then(() => {
-        // navigate(`/admin?page=${pageState}&folder=${folder}&title=${title}`);
+        navigate(
+          `/admin/serie-episodes/${params.id}?page=${pageState}&folder=${folder}&title=${title}`
+        );
         deleted();
         setDeleteWindow(false);
         // console.log("recargar de nuevo");
@@ -711,8 +716,8 @@ const Search = () => {
 
         <section className="cell-label-input">
           <label className="label" htmlFor="genre"></label>
-          <Link className="select-arrow addMedia" to="/admin/add-episode">
-            Agregar episodios
+          <Link className="select-arrow addMedia" to={`/admin/add-episode/${params.id}`}>
+            Agregar Episodios
           </Link>
         </section>
       </DashboardSt>
@@ -748,12 +753,12 @@ const Search = () => {
             <div className="cell image-container">
               <img
                 className="image"
-                src={`${process.env.REACT_APP_BACKEND_URL}/static/posters/${i.imageS}`}
+                src={`${process.env.REACT_APP_BACKEND_URL}/static/episodes/${i.imageS}`}
                 alt=""
               />
               <img
                 className="afuera"
-                src={`${process.env.REACT_APP_BACKEND_URL}/static/posters/${i.imageS}`}
+                src={`${process.env.REACT_APP_BACKEND_URL}/static/episodes/${i.imageS}`}
                 alt=""
                 // style={
                 //   index === 15
@@ -774,12 +779,12 @@ const Search = () => {
               //           : { color: "#ff004c" }
               //       }
             >
-              {i.season}
+              Temporada: {i.season}
               {/* {i.link.substring(39 + i.folder.length, 42 + i.folder.length)} */}
               {/* {i.title.substring(0, 3)} */}
             </div>
 
-            <div className="cell"> {i.episode}</div>
+            <div className="cell">Episodio: {i.episode}</div>
 
             <div className="cell center" style={i.available ? { color: "lime" } : { color: "red" }}>
               {i.available ? "Si" : "No"}
@@ -801,6 +806,7 @@ const Search = () => {
               {i.folder}
             </div> */}
             <div className="cell ">{decodeURI(i.link).substring(34, i.link.length)}</div>
+
             <span
               className="cell action-btn"
               onClick={() => {
@@ -810,7 +816,7 @@ const Search = () => {
             >
               <BsFillPlayFill />
             </span>
-            <Link className="cell action-btn " to={`/admin/update-media/${i._id}`}>
+            <Link className="cell action-btn " to={`/admin/update-episode/${i._id}`}>
               <EditIcon />
             </Link>
 

@@ -480,7 +480,7 @@ const Search = () => {
         setTotalPages(response.data.totalPages);
         setDocs(response.data.totalDocs);
         setSpinner(false);
-        // console.log(response);
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -712,7 +712,7 @@ const Search = () => {
 
         <section className="cell-label-input">
           <label className="label" htmlFor="genre"></label>
-          <Link className="select-arrow addMedia" to="/admin/add-series">
+          <Link className="select-arrow addMedia" to="/admin/add-serie">
             Agregar
           </Link>
         </section>
@@ -740,23 +740,23 @@ const Search = () => {
           <div className="cell head" title="Calificación">
             Calificación
           </div>
-          <div className="cell head">Temporadas</div>
+          <div className="cell head"></div>
           {/* <div className="cell head">URL</div> */}
           <div className="cell head">Episodios</div>
           <div className="cell head">Editar</div>
           <div className="cell head">Borrar</div>
         </div>
-        {state?.map((i, index) => (
+        {state?.map((i) => (
           <div className="tRow" key={i._id}>
             <div className="cell image-container">
               <img
                 className="image"
-                src={`${process.env.REACT_APP_BACKEND_URL}/static/posters/${i.imageS}`}
+                src={`${process.env.REACT_APP_BUCKET_SERIES}${i.imageS}`}
                 alt=""
               />
               <img
                 className="afuera"
-                src={`${process.env.REACT_APP_BACKEND_URL}/static/posters/${i.imageS}`}
+                src={`${process.env.REACT_APP_BUCKET_SERIES}${i.imageS}`}
                 alt=""
                 // style={
                 //   index === 15
@@ -811,10 +811,10 @@ const Search = () => {
               }}
             >
             </span> */}
-            <Link className="cell action-btn" to={`/admin/episodes`}>
+            <Link className="cell action-btn" to={`/admin/serie-episodes/${i._id}`}>
               <AiOutlineAppstoreAdd className="sysIcon" />
             </Link>
-            <Link className="cell action-btn " to={`/admin/update-series/${i._id}`}>
+            <Link className="cell action-btn " to={`/admin/update-serie/${i._id}`}>
               <EditIcon />
             </Link>
 
