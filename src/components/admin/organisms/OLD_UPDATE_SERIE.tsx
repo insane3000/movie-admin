@@ -108,7 +108,7 @@ const SearchSt = styled.div`
           width: 100%;
           height: 3rem;
           display: grid;
-          grid-template-columns: 15% 15% 25% calc(25% - 5rem) 10% 10%;
+          grid-template-columns: 15% 35% 25% calc(15% - 4rem) 10%;
           grid-template-rows: 100%;
           gap: 1rem;
           justify-content: center;
@@ -198,7 +198,7 @@ const SearchSt = styled.div`
           width: 100%;
           height: 4rem;
           display: grid;
-          grid-template-columns: 7.5% 22.5% calc(45% - 4rem) 15% 10%;
+          grid-template-columns: 7.5% calc(80% - 2rem) 12.5%;
           grid-template-rows: 100%;
           gap: 1rem;
           justify-content: center;
@@ -277,57 +277,37 @@ const SearchSt = styled.div`
   }
 `;
 const Search = () => {
-  const fileRef = useRef<any>();
+  //   const fileRef = useRef<any>();
   const params = useParams();
   let navigate = useNavigate();
-  const dispatch = useDispatch();
   const app = useSelector((store: StoreInterface) => store.app);
-  const [id, setId] = useState<any>("");
-  const [imageXL, setImageXL] = useState<any>("");
-  const [imageL, setImageL] = useState<any>("");
-  const [imageM, setImageM] = useState<any>("");
-  const [imageS, setImageS] = useState<any>("");
+  const [id, setID] = useState("");
+  const [imageL, setImageL] = useState("");
+  const [imageM, setImageM] = useState("");
+  const [imageS, setImageS] = useState("");
 
   const [language, setLanguage] = useState("latino");
-  const [folder, setFolder] = useState("serie-tv");
-  const [file, setFile] = useState<any>();
-  const [title, setTitle] = useState<any>("");
-  const [originalTitle, setOriginalTitle] = useState<any>("");
-  const [rating, setRating] = useState<any>(0);
-  const [year, setYear] = useState<any>("");
-  const [genre, setGenre] = useState<any>("");
-  const [time, setTime] = useState<any>("");
-  const [actors, setActors] = useState<any>("");
-  const [synopsis, setSynopsis] = useState<any>("");
-  const [link, setLink] = useState<any>("");
-  const [server, setServer] = useState<any>("backblaze");
-  const [available, setAvailable] = useState<any>(true);
-  //   console.log(language);
+  const [title, setTitle] = useState("");
+  const [originalTitle, setOriginalTitle] = useState("");
 
-  // const [alertImg, setAlertImg] = useState<any>(false);
-  // !Handle Change file
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.currentTarget.files?.[0];
-    // if (value && value.size > 1048576) {
-    //   // setAlertImg(true);
-    // } else {
-    //   setFile(value);
-    // }
-    setFile(value);
-  };
-  // !Handle Change inputs
-  const handleLatino = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    let value = e.currentTarget.value;
-    setLanguage(value);
-  };
-  const handleFolder = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    let value = e.currentTarget.value;
-    setFolder(value);
-  };
+  const [year, setYear] = useState("");
+  const [time, setTime] = useState("");
+  const [actors, setActors] = useState("");
+  const [genre, setGenre] = useState("");
+  const [synopsis, setSynopsis] = useState("");
+  const [rating, setRating] = useState<any>(0);
+  const [file, setFile] = useState<any>();
+  const [available, setAvailable] = useState<any>(true);
   // !Funtion To Capitalize first letter
   function capitalizarPrimeraLetra(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
+
+  // !Handle Change inputs
+  const handleLanguage = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    let value = e.currentTarget.value;
+    setLanguage(value);
+  };
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.currentTarget.value;
     setTitle(capitalizarPrimeraLetra(value));
@@ -336,17 +316,10 @@ const Search = () => {
     let value = e.currentTarget.value;
     setOriginalTitle(capitalizarPrimeraLetra(value));
   };
-  const handleRating = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.currentTarget.value;
-    setRating(value);
-  };
+
   const handleYear = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.currentTarget.value;
     setYear(value);
-  };
-  const handleGenre = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.currentTarget.value;
-    setGenre(value);
   };
   const handleTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.currentTarget.value;
@@ -356,51 +329,50 @@ const Search = () => {
     let value = e.currentTarget.value;
     setActors(value);
   };
+  const handleGenre = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.currentTarget.value;
+    setGenre(value);
+  };
   const handleSynopsis = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     let value = e.currentTarget.value;
     setSynopsis(value);
   };
-  const handleLink = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRating = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.currentTarget.value;
-    setLink(value);
+    setRating(value);
   };
-  const handleServer = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    let value = e.currentTarget.value;
-    setServer(value);
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.currentTarget.files?.[0];
+    setFile(value);
   };
   const handleAvailable = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let value = e.currentTarget.value === "true" ? true : false;
     setAvailable(value);
   };
+  // console.log(available);
   // !Handle Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let formData = new FormData();
 
     formData.append("language", language);
-    formData.append("folder", folder);
     formData.append("title", title);
     formData.append("originalTitle", originalTitle);
-    formData.append("rating", rating);
     formData.append("year", year);
-    formData.append("genre", genre);
     formData.append("time", time);
     formData.append("actors", actors);
+    formData.append("genre", genre);
     formData.append("synopsis", synopsis);
-    formData.append("link", link);
+    formData.append("rating", rating);
     formData.append("file", file);
-    formData.append("imageXL", imageXL);
+    formData.append("available", available);
+    // !For delete previous images
     formData.append("imageL", imageL);
     formData.append("imageM", imageM);
     formData.append("imageS", imageS);
-    formData.append("_id", id);
-    formData.append("server", server);
-    formData.append("available", available);
-
-    // console.log("put client");
-
+    //     console.log(formData)
     await axios
-      .put(`${process.env.REACT_APP_BACKEND_URL}/movies/${params.id}`, formData, {
+      .put(`${process.env.REACT_APP_BACKEND_URL}/series/${params.id}`, formData, {
         headers: {
           authorization: `Bearer ${app.login.token}`,
           id: `${app.login.user}`,
@@ -408,19 +380,15 @@ const Search = () => {
         },
       })
       .then((response) => {
-        // console.log(response.data);
         if (response.statusText === "OK") {
-          //   navigate("/admin");
           navigate(-1);
           edited();
-
-          // fetchData();
         }
       });
   };
   const fetchData = async () => {
     axios
-      .get(`${process.env.REACT_APP_BACKEND_URL}/movies/${params.id}`, {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/series/${params.id}`, {
         headers: {
           authorization: `Bearer ${app.login.token}`,
           id: `${app.login.user}`,
@@ -430,7 +398,6 @@ const Search = () => {
       .then(function (response) {
         //TODO Por cada nuevo dato seteado, se renderiza de nuevo. fixear!!!
         setLanguage(response.data.language);
-        setFolder(response.data.folder);
         setTitle(response.data.title);
         setOriginalTitle(response.data.originalTitle);
         setRating(response.data.rating);
@@ -439,19 +406,17 @@ const Search = () => {
         setTime(response.data.time);
         setActors(response.data.actors);
         setSynopsis(response.data.synopsis);
-        setLink(response.data.link);
-        setImageXL(response.data.imageXL);
+        setAvailable(response.data.available);
+        //! For delete previous images
         setImageL(response.data.imageL);
         setImageM(response.data.imageM);
         setImageS(response.data.imageS);
-        setId(response.data._id);
-        setServer(response.data.server);
-        setAvailable(response.data.available);
-        // console.log(response);
+        setID(response.data._id);
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
-        dispatch(loginServer("", "", ""));
+        // dispatch(loginServer("", "", ""));
         localStorage.setItem("token", "");
         localStorage.setItem("user", "");
         localStorage.setItem("role", "");
@@ -462,9 +427,7 @@ const Search = () => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
-  // console.log(imageLink);
-  // console.log(file);
-  // console.log(file && `${BUCKET}${file}`);
+
   // !toast
   const edited = () => toast.success("Editado.");
   const copied = () => toast.success("Copiado!");
@@ -476,7 +439,7 @@ const Search = () => {
   return (
     <SearchSt>
       <div className="poster">
-        <img src={imageL && `${process.env.REACT_APP_BUCKET}${imageL}`} alt="" />
+        <img src={imageL && `${process.env.REACT_APP_BUCKET_SERIES}${imageL}`} alt="" />
       </div>
       <div className="data-right">
         <div className="id-title">
@@ -486,7 +449,7 @@ const Search = () => {
               <IoIosCopy className="icon" onClick={copyToClipboard} />
             </CopyToClipboard>
           </div>
-          <h2 className="title">Actualizar series</h2>
+          <h2 className="title">Actualizar peliculas</h2>
         </div>
         <form className="upload-form" onSubmit={handleSubmit}>
           <section className="container-inputs">
@@ -496,39 +459,13 @@ const Search = () => {
                 value={language}
                 className="input-form select"
                 name="server"
-                onChange={(e) => handleLatino(e)}
+                onChange={(e) => handleLanguage(e)}
               >
                 <option value="latino">Latino</option>
                 <option value="subtitulado">Subtitulado</option>
               </select>
             </div>
-            <div className="input-form-container">
-              <span className="label">Carpeta:</span>
-              <select
-                value={folder}
-                className="input-form select"
-                name="server"
-                onChange={(e) => handleFolder(e)}
-              >
-                <option value="estrenos">Estrenos</option>
-                <option value="accion">Acción</option>
-                <option value="animacion">Animación</option>
-                <option value="anime">Anime</option>
-                <option value="aventura">Aventura</option>
-                <option value="belico">Bélico</option>
-                <option value="ciencia-ficcion">Ciencia Ficción</option>
-                <option value="comedia">Comedia</option>
-                <option value="documental">Documental</option>
-                <option value="drama">Drama</option>
-                <option value="fantasia">Fantasia</option>
-                <option value="intriga">Intriga</option>
-                <option value="romance">Romance</option>
-                <option value="terror">Terror</option>
-                <option value="thriller">Thriller</option>
-                <option value="western">Western</option>
-                <option value="series-tv">Series TV</option>
-              </select>
-            </div>
+
             <div className="input-form-container">
               <span className="label">Título:</span>
               <input
@@ -623,39 +560,15 @@ const Search = () => {
             <div className="input-form-container">
               <span className="label">Poster:</span>
               <input
-                ref={fileRef}
                 name="file"
                 className="input-form "
                 type="file"
-                onChange={(e) => handleChange(e)}
+                onChange={(e) => handleChangeFile(e)}
                 placeholder="File"
                 accept="image/*"
               />
             </div>
-            <div className="input-form-container" style={{ opacity: 0 }}>
-              <span className="label">Link de la película mp4:</span>
-              <input
-                name="link"
-                className="input-form"
-                type="text"
-                onChange={(e) => handleLink(e)}
-                placeholder="Link de la película."
-                value={link}
-                disabled
-              />
-            </div>
-            <div className="input-form-container">
-              <span className="label">Servidor:</span>
-              <select
-                value={server}
-                className="input-form select"
-                name="server"
-                onChange={(e) => handleServer(e)}
-              >
-                <option value="backblaze">Backblaze</option>
-                <option value="mediafire">Mediafire</option>
-              </select>
-            </div>
+
             <div className="input-form-container">
               <span className="label">Disponible:</span>
               <select

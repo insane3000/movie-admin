@@ -302,6 +302,7 @@ const Search = () => {
   const [link, setLink] = useState<any>("");
   const [server, setServer] = useState<any>("backblaze");
   const [available, setAvailable] = useState<any>(true);
+  const [type, setType] = useState("movie");
   //   console.log(language);
 
   // const [alertImg, setAlertImg] = useState<any>(false);
@@ -322,7 +323,9 @@ const Search = () => {
   };
   const handleFolder = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let value = e.currentTarget.value;
+    let localType = value === "series-tv" ? "serie-tv" : "movie";
     setFolder(value);
+    setType(localType);
   };
   // !Funtion To Capitalize first letter
   function capitalizarPrimeraLetra(str: string) {
@@ -396,7 +399,7 @@ const Search = () => {
     formData.append("_id", id);
     formData.append("server", server);
     formData.append("available", available);
-
+    formData.append("type", type);
     // console.log("put client");
 
     await axios
@@ -447,6 +450,7 @@ const Search = () => {
         setId(response.data._id);
         setServer(response.data.server);
         setAvailable(response.data.available);
+        setType(response.data.type);
         // console.log(response);
       })
       .catch(function (error) {
@@ -526,6 +530,7 @@ const Search = () => {
                 <option value="terror">Terror</option>
                 <option value="thriller">Thriller</option>
                 <option value="western">Western</option>
+                <option value="series-tv">Series TV</option>
               </select>
             </div>
             <div className="input-form-container">

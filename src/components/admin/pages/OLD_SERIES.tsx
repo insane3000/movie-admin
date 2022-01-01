@@ -17,9 +17,8 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { MdFirstPage } from "react-icons/md";
 import { MdLastPage } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
-import { BsFillPlayFill } from "react-icons/bs";
-import Spinner from "components/Spinner";
 import { AiOutlineAppstoreAdd } from "react-icons/ai";
+import Spinner from "components/Spinner";
 const MediaSt = styled.div`
   width: 100%;
   height: 100%;
@@ -233,7 +232,7 @@ const TableSt = styled.div`
   overflow: visible;
   .tRow {
     display: grid;
-    grid-template-columns: 4% calc(21% - 1.5rem) 10% 10% 10% 30% 5% 5% 5%;
+    grid-template-columns: 4% calc(21% - 1.5rem) 20% 20% 20% 5% 5% 5%;
     grid-template-rows: 100%;
     column-gap: 0.2rem;
     justify-content: center;
@@ -324,6 +323,9 @@ const TableSt = styled.div`
         background: #ffffff;
         color: #000000;
       }
+      /* .sysIcon {
+        color: red;
+      } */
     }
     .center {
       text-align: center;
@@ -340,40 +342,40 @@ const TableSt = styled.div`
     background: #0d0d0e;
   }
 `;
-const PlayerSt = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  background: #000000d8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  .close {
-    background: #ffffff;
-    width: 3rem;
-    height: 3rem;
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100%;
-    overflow: hidden;
-    cursor: pointer;
-    .sysIconClose {
-      width: 60%;
-      height: 60%;
-      font-size: 2rem;
-    }
-  }
-  .player {
-    width: 80%;
-    height: auto;
-    max-height: 90%;
-    background: black;
-  }
-`;
+// const PlayerSt = styled.div`
+//   width: 100%;
+//   height: 100%;
+//   position: absolute;
+//   background: #000000d8;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   .close {
+//     background: #ffffff;
+//     width: 3rem;
+//     height: 3rem;
+//     position: absolute;
+//     right: 2rem;
+//     top: 2rem;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     border-radius: 100%;
+//     overflow: hidden;
+//     cursor: pointer;
+//     .sysIconClose {
+//       width: 60%;
+//       height: 60%;
+//       font-size: 2rem;
+//     }
+//   }
+//   .player {
+//     width: 80%;
+//     height: auto;
+//     max-height: 90%;
+//     background: black;
+//   }
+// `;
 
 interface MovieIT {
   _id: "";
@@ -409,28 +411,27 @@ const Search = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [sortQuery, setSortQuery] = useState<any>("createdAt");
   const [ascDesc, setAscDesc] = useState<any>("desc");
-  const [type, setType] = useState<any>("movie");
   //!Spinner
   const [spinner, setSpinner] = useState(false);
   //! Delete consfirm window state
   const [deleteWindow, setDeleteWindow] = useState(false);
   const [idToDelete, setIdToDelete] = useState("");
   //!Player
-  const [playerModal, setPlayerModal] = useState(false);
-  const [linkModal, setLinkModal] = useState("");
+  //   const [playerModal, setPlayerModal] = useState(false);
+  //   const [linkModal, setLinkModal] = useState("");
   // !Handle Pagination
   const handlePrevious = (number: number) => {
     navigate(
       `/admin?page=${
         parseInt(pageState) - number
-      }&folder=${folder}&title=${title}&available=${available}&sortQuery=${sortQuery}&ascDesc=${ascDesc}&type=${type}`
+      }&folder=${folder}&title=${title}&available=${available}&sortQuery=${sortQuery}&ascDesc=${ascDesc}`
     );
   };
   const handleNext = (number: number) => {
     navigate(
       `/admin?page=${
         parseInt(pageState) + number
-      }&folder=${folder}&title=${title}&available=${available}&sortQuery=${sortQuery}&ascDesc=${ascDesc}&type=${type}`
+      }&folder=${folder}&title=${title}&available=${available}&sortQuery=${sortQuery}&ascDesc=${ascDesc}`
     );
   };
   // !Handle Change Folder
@@ -440,7 +441,7 @@ const Search = () => {
     let ascDescLocal = "asc";
     setFolder(value);
     navigate(
-      `/admin?page=1&folder=${value}&title=${title}&available=${available}&sortQuery=${sortQueryLocal}&ascDesc=${ascDescLocal}&type=${type}`
+      `/admin?page=1&folder=${value}&title=${title}&available=${available}&sortQuery=${sortQueryLocal}&ascDesc=${ascDescLocal}`
     );
   };
   // !Handle Change Available
@@ -450,7 +451,7 @@ const Search = () => {
 
     //     console.log(value);
     navigate(
-      `/admin?page=1&folder=${folder}&title=${title}&available=${value}&sortQuery=${sortQuery}&ascDesc=${ascDesc}&type=${type}`
+      `/admin?page=1&folder=${folder}&title=${title}&available=${value}&sortQuery=${sortQuery}&ascDesc=${ascDesc}`
     );
   };
   // !Fetching Function
@@ -460,13 +461,12 @@ const Search = () => {
     titleParams: any,
     availableParams: any,
     sortQueryParams: any,
-    ascDescParams: any,
-    typeParams: any
+    ascDescParams: any
   ) => {
     setSpinner(true);
     axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/movies-admin?page=${pageParams}&limit=17&folder=${folderParams}&title=${titleParams}&available=${availableParams}&sortQuery=${sortQueryParams}&ascDesc=${ascDescParams}&type=${typeParams}`,
+        `${process.env.REACT_APP_BACKEND_URL}/series-admin?page=${pageParams}&limit=17&folder=${folderParams}&title=${titleParams}&available=${availableParams}&sortQuery=${sortQueryParams}&ascDesc=${ascDescParams}`,
         {
           headers: {
             authorization: `Bearer ${app.login.token}`,
@@ -475,12 +475,12 @@ const Search = () => {
           },
         }
       )
-      .then(function (response: any) {
+      .then(function (response) {
         setState(response.data.docs);
         setTotalPages(response.data.totalPages);
         setDocs(response.data.totalDocs);
-        // console.log(response);
         setSpinner(false);
+        console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -499,14 +499,13 @@ const Search = () => {
     const availableParams = params.get("available") ? params.get("available") : "true";
     const sortQueryParams = params.get("sortQuery") ? params.get("sortQuery") : "createdAt";
     const ascDescParams = params.get("ascDesc") ? params.get("ascDesc") : "desc";
-    const typeParams = params.get("type") ? params.get("type") : "serie-tv";
+
     setPageState(pageParams);
     setFolder(folderParams);
     setTitle(titleParams);
     setAvailable(availableParams);
     setSortQuery(sortQueryParams);
     setAscDesc(ascDescParams);
-    setType(typeParams);
 
     // !Fetching Data whit params
     fetchData(
@@ -515,8 +514,7 @@ const Search = () => {
       titleParams,
       availableParams,
       sortQueryParams,
-      ascDescParams,
-      typeParams
+      ascDescParams
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location, folder]);
@@ -531,34 +529,18 @@ const Search = () => {
     if (title.length >= 1) {
       timerRef.current = setTimeout(
         () =>
-          navigate(
-            `/admin?page=1&folder=${folder}&title=${value}&available=${available}&type=${type}`
-          ),
+          navigate(`/admin/series?page=1&folder=${folder}&title=${value}&available=${available}`),
         500
       );
     }
   };
-  //   const handleSubmit = () => {
-  //     navigate(`/admin?page=1&folder=${folder}&title=${title}`);
-  //   };
-  //   const timerRef = useRef<any>(null);
-  //   useEffect(() => {
-  //     clearTimeout(timerRef.current);
-  //     if (title.length >= 1) {
-  //       timerRef.current = setTimeout(
-  //         () => navigate(`/admin?page=1&folder=${folder}&title=${title}`),
-  //         500
-  //       );
-  //     }
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, [title]);
 
   // !toast
   const deleted = () => toast.success("Borrado.");
   // !Delete Movie
   const handleDelete = async (id: string) => {
     await axios
-      .delete(`${process.env.REACT_APP_BACKEND_URL}/movies/${id}`, {
+      .delete(`${process.env.REACT_APP_BACKEND_URL}/series/${id}`, {
         headers: {
           authorization: `Bearer ${app.login.token}`,
           id: `${app.login.user}`,
@@ -566,7 +548,7 @@ const Search = () => {
         },
       })
       .then(() => {
-        navigate(`/admin?page=${pageState}&folder=${folder}&title=${title}`);
+        navigate(`/admin/series?page=${pageState}&folder=${folder}&title=${title}`);
         deleted();
         setDeleteWindow(false);
         // console.log("recargar de nuevo");
@@ -577,7 +559,7 @@ const Search = () => {
     setSortQuery(value);
     let ascDescLocal = ascDesc === "asc" ? "desc" : "asc";
     navigate(
-      `/admin?page=1&folder=${folder}&title=${title}&available=${available}&sortQuery=${value}&ascDesc=${ascDescLocal}&type=${type}`
+      `/admin?page=1&folder=${folder}&title=${title}&available=${available}&sortQuery=${value}&ascDesc=${ascDescLocal}`
     );
     console.log(value);
   };
@@ -587,12 +569,13 @@ const Search = () => {
       <DashboardSt>
         <section className="cell-label-input">
           <label className="label" htmlFor="genre">
-            Películas
+            Series
           </label>
           <input className="select-arrow inputOnly" type="text" value={docs} readOnly />
         </section>
 
-        <section className="cell-label-input">
+        <div></div>
+        {/* <section className="cell-label-input">
           <label className="label" htmlFor="genre">
             Carpeta
           </label>
@@ -605,8 +588,8 @@ const Search = () => {
               value={folder}
               onChange={handleChange}
             >
-              <option value="series-tv">Series TV</option>
-              {/* <option value="estrenos">Estrenos</option>
+              <option value=" *">Todas</option>
+              <option value="estrenos">Estrenos</option>
               <option value="accion">Acción</option>
               <option value="animacion">Animación</option>
               <option value="anime">Anime</option>
@@ -621,10 +604,10 @@ const Search = () => {
               <option value="romance">Romance</option>
               <option value="terror">Terror</option>
               <option value="thriller">Thriller</option>
-              <option value="western">Western</option> */}
+              <option value="western">Western</option>
             </select>
           </div>
-        </section>
+        </section> */}
 
         <section className="cell-label-input">
           <label className="label" htmlFor="genre">
@@ -757,23 +740,23 @@ const Search = () => {
           <div className="cell head" title="Calificación">
             Calificación
           </div>
-          <div className="cell head">Carpeta</div>
           <div className="cell head"></div>
+          {/* <div className="cell head">URL</div> */}
           <div className="cell head">Episodios</div>
           <div className="cell head">Editar</div>
           <div className="cell head">Borrar</div>
         </div>
-        {state?.map((i, index) => (
+        {state?.map((i) => (
           <div className="tRow" key={i._id}>
             <div className="cell image-container">
               <img
                 className="image"
-                src={`${process.env.REACT_APP_BACKEND_URL}/static/posters/${i.imageS}`}
+                src={`${process.env.REACT_APP_BUCKET_SERIES}${i.imageS}`}
                 alt=""
               />
               <img
                 className="afuera"
-                src={`${process.env.REACT_APP_BACKEND_URL}/static/posters/${i.imageS}`}
+                src={`${process.env.REACT_APP_BUCKET_SERIES}${i.imageS}`}
                 alt=""
                 // style={
                 //   index === 15
@@ -787,12 +770,12 @@ const Search = () => {
             {/* <div className="cell text-align-center"> {i.imageS}</div> */}
             <div
               className="cell "
-              style={
-                i.title.substring(0, 3) ===
-                decodeURI(i.link).substring(39 + i.folder.length, 42 + i.folder.length)
-                  ? { color: "#00ffb3" }
-                  : { color: "#ff004c" }
-              }
+              //       style={
+              //         i.title.substring(0, 3) ===
+              //         decodeURI(i.link).substring(39 + i.folder.length, 42 + i.folder.length)
+              //           ? { color: "#00ffb3" }
+              //           : { color: "#ff004c" }
+              //       }
             >
               {i.title}
               {/* {i.link.substring(39 + i.folder.length, 42 + i.folder.length)} */}
@@ -809,15 +792,17 @@ const Search = () => {
             </div>
             <div
               className="cell "
-              style={
-                i.folder === i.link.substring(38, 38 + i.folder.length)
-                  ? { color: "#00ffb3" }
-                  : { color: "#ff004c" }
-              }
+              //       style={
+              //         i.folder === i.link.substring(38, 38 + i.folder.length)
+              //           ? { color: "#00ffb3" }
+              //           : { color: "#ff004c" }
+              //       }
             >
-              {i.folder}
+              {/* {i.folder} */}
             </div>
-            <div className="cell ">{decodeURI(i.link).substring(34, i.link.length)}</div>
+            {/* <div className="cell ">{decodeURI(i.link).substring(34, i.link.length)}</div> */}
+            {/* <div className="cell ">{}</div> */}
+
             {/* <span
               className="cell action-btn"
               onClick={() => {
@@ -825,7 +810,6 @@ const Search = () => {
                 setLinkModal(i.link);
               }}
             >
-              <BsFillPlayFill />
             </span> */}
             <Link className="cell action-btn" to={`/admin/serie-episodes/${i._id}`}>
               <AiOutlineAppstoreAdd className="sysIcon" />
@@ -848,7 +832,7 @@ const Search = () => {
         {spinner && <Spinner />}
       </TableSt>
 
-      {playerModal && (
+      {/* {playerModal && (
         <PlayerSt>
           <div className="close" onClick={() => setPlayerModal(false)}>
             <IoCloseOutline className="sysIconClose" />
@@ -857,7 +841,7 @@ const Search = () => {
             <source src={linkModal} type="video/mp4" />
           </video>
         </PlayerSt>
-      )}
+      )} */}
 
       {deleteWindow && (
         <div className="delete-window">

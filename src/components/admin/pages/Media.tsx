@@ -19,6 +19,7 @@ import { MdLastPage } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
 import { BsFillPlayFill } from "react-icons/bs";
 import Spinner from "components/Spinner";
+import { AiOutlineAppstoreAdd } from "react-icons/ai";
 const MediaSt = styled.div`
   width: 100%;
   height: 100%;
@@ -390,6 +391,7 @@ interface MovieIT {
   imageS: "";
   server: "";
   available: "";
+  type: "";
 }
 type Movies = [MovieIT];
 const Search = () => {
@@ -476,7 +478,7 @@ const Search = () => {
         setState(response.data.docs);
         setTotalPages(response.data.totalPages);
         setDocs(response.data.totalDocs);
-        // console.log(response);
+        console.log(response);
         setSpinner(false);
       })
       .catch(function (error) {
@@ -579,7 +581,7 @@ const Search = () => {
       <DashboardSt>
         <section className="cell-label-input">
           <label className="label" htmlFor="genre">
-            Películas
+            Títulos
           </label>
           <input className="select-arrow inputOnly" type="text" value={docs} readOnly />
         </section>
@@ -614,6 +616,7 @@ const Search = () => {
               <option value="terror">Terror</option>
               <option value="thriller">Thriller</option>
               <option value="western">Western</option>
+              <option value="series-tv">Series TV</option>
             </select>
           </div>
         </section>
@@ -780,10 +783,12 @@ const Search = () => {
             <div
               className="cell "
               style={
-                i.title.substring(0, 3) ===
-                decodeURI(i.link).substring(39 + i.folder.length, 42 + i.folder.length)
-                  ? { color: "#00ffb3" }
-                  : { color: "#ff004c" }
+                `${i.link}` !== ""
+                  ? i.title.substring(0, 3) ===
+                    decodeURI(i.link).substring(39 + i.folder.length, 42 + i.folder.length)
+                    ? { color: "#00ffb3" }
+                    : { color: "#ff004c" }
+                  : { color: "#ffee00" }
               }
             >
               {i.title}
@@ -802,23 +807,35 @@ const Search = () => {
             <div
               className="cell "
               style={
-                i.folder === i.link.substring(38, 38 + i.folder.length)
-                  ? { color: "#00ffb3" }
-                  : { color: "#ff004c" }
+                `${i.link}` !== ""
+                  ? i.folder === i.link.substring(38, 38 + i.folder.length)
+                    ? { color: "#00ffb3" }
+                    : { color: "#ff004c" }
+                  : { color: "#ffee00" }
               }
             >
               {i.folder}
             </div>
-            <div className="cell ">{decodeURI(i.link).substring(34, i.link.length)}</div>
-            <span
-              className="cell action-btn"
-              onClick={() => {
-                setPlayerModal(true);
-                setLinkModal(i.link);
-              }}
-            >
-              <BsFillPlayFill />
-            </span>
+            <div className="cell ">
+              {`${i.link}` === "" ? `` : decodeURI(i.link).substring(34, i.link.length)}
+            </div>
+
+            {`${i.type}` === "movie" ? (
+              <span
+                className="cell action-btn"
+                onClick={() => {
+                  setPlayerModal(true);
+                  setLinkModal(i.link);
+                }}
+              >
+                <BsFillPlayFill />
+              </span>
+            ) : (
+              <Link className="cell action-btn" to={`/admin/serie-episodes/${i._id}`}>
+                <AiOutlineAppstoreAdd className="sysIcon" />
+              </Link>
+            )}
+
             <Link className="cell action-btn " to={`/admin/update-media/${i._id}`}>
               <EditIcon />
             </Link>
