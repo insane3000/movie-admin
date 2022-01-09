@@ -4,16 +4,16 @@ import styled from "styled-components";
 import Error404 from "../Error404";
 import Navigation from "components/admin/organisms/Navigation";
 import Media from "components/admin/pages/Media";
-import Series from "components/admin/pages/Series";
+// import Series from "components/admin/pages/Series";
 import Episodes from "components/admin/pages/Episodes";
 import Clients from "components/admin/pages/Clients";
 import Backup from "components/admin/pages/Backup";
 
 import AddMedia from "components/admin/organisms/AddMedia";
-import AddSerie from "components/admin/organisms/AddSerie";
+// import AddSerie from "components/admin/organisms/AddSerie";
 import AddEpisode from "components/admin/organisms/AddEpisode";
 import UpdateMedia from "components/admin/organisms/UpdateMedia";
-import UpdateSerie from "components/admin/organisms/UpdateSerie";
+// import UpdateSerie from "components/admin/organisms/UpdateSerie";
 import UpdateEpisode from "components/admin/organisms/UpdateEpisode";
 
 import AddClient from "components/admin/organisms/AddClient";
@@ -43,9 +43,9 @@ const Admin = () => {
         <Route path="/add-media" element={<AddMedia />} />
         <Route path="/update-media/:id" element={<UpdateMedia />} />
 
-        <Route path="/series" element={<Series />} />
+        {/* <Route path="/series" element={<Series />} />
         <Route path="/add-serie" element={<AddSerie />} />
-        <Route path="/update-serie/:id" element={<UpdateSerie />} />
+        <Route path="/update-serie/:id" element={<UpdateSerie />} /> */}
 
         <Route path="/serie-episodes/:id" element={<Episodes />} />
         <Route path="/add-episode/:id" element={<AddEpisode />} />

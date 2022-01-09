@@ -226,7 +226,7 @@ const Search = () => {
   const [type, setType] = useState("movie");
   // const [alertImg, setAlertImg] = useState<any>(false);
 
-//   console.log(language);
+  //   console.log(language);
 
   // !Handle Change file
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -353,7 +353,9 @@ const Search = () => {
               onChange={(e) => handleLatino(e)}
             >
               <option value="latino">Latino</option>
+              <option value="castellano">Castellano</option>
               <option value="subtitulado">Subtitulado</option>
+              <option value="ingles">Ingles</option>
             </select>
           </div>
           <div className="input-form-container">

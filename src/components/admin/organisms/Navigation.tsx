@@ -107,10 +107,12 @@ const Navigation = () => {
         <MdLocalMovies className="sysIconNav" />
         <span className="text none">Media</span>
       </NavLink>
-      <NavLink className="navLink" to="/admin/series">
+
+      {/* <NavLink className="navLink" to="/admin/series">
         <BsCameraVideoFill className="sysIconNav" />
         <span className="text none">Series</span>
-      </NavLink>
+      </NavLink> */}
+
       <NavLink className="navLink" to="/admin/clients">
         <FaUserEdit className="sysIconNav" />
         <span className="text none">Clientes</span>

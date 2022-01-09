@@ -135,6 +135,7 @@ interface User {
   phone: string;
   date: string;
   role: string;
+  screens: number;
 }
 const UpdateUser = () => {
   const params = useParams();
@@ -150,6 +151,7 @@ const UpdateUser = () => {
     phone: "",
     date: `${formatDate(Date.now())}`,
     role: "user",
+    screens: 1,
   });
   // console.log(state.date);
   //! funcion para formatiear la fecha
@@ -160,7 +162,7 @@ const UpdateUser = () => {
   //! funcion para crear un hash o nombre aleatorio
   function makeid(length: number) {
     var result = "";
-    var characters = "abcdefghjklmnpqrstuvwxyz123456789";
+    var characters = "abcdefghjkmnpqrstuvwxyz123456789";
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -225,6 +227,7 @@ const UpdateUser = () => {
             name: response.data.name,
             phone: response.data.phone,
             date: formatDate(new Date(response.data.date).getTime()),
+            screens: response.data.screens,
           }));
         })
         .catch(function (error) {
@@ -252,6 +255,7 @@ const UpdateUser = () => {
           value={state.user}
           onChange={handleChange}
           placeholder="Usuario"
+          required
         />
         <div className="containerUserName">
           <input
@@ -261,7 +265,7 @@ const UpdateUser = () => {
             value={state.password}
             onChange={handleChange}
             required
-        //     maxLength={5}
+            //     maxLength={5}
             placeholder="Contraseña"
           />
           <HashIcon className="hashIcon" onClick={handleCreateUser} />
@@ -288,6 +292,15 @@ const UpdateUser = () => {
           type="datetime-local"
           value={state.date}
           onChange={handleChange}
+        />
+        <input
+          name="screens"
+          className="cellInput"
+          type="number"
+          value={state.screens}
+          onChange={handleChange}
+          min="1"
+          max="4"
         />
         <input className="cellInput submit" type="submit" value="ACTUALIZAR" />
         <Link className="close" to="/admin/clients">

@@ -133,6 +133,7 @@ interface User {
   phone: string;
   date: string;
   role: string;
+  screens: number;
 }
 const CreateUser = () => {
   let navigate = useNavigate();
@@ -145,6 +146,7 @@ const CreateUser = () => {
     phone: "",
     date: `${formatDate(Date.now())}`,
     role: "user",
+    screens: 1,
   });
   //! funcion para formatiear la fecha
   function formatDate(data: number) {
@@ -153,7 +155,7 @@ const CreateUser = () => {
   //! funcion para crear un hash o nombre aleatorio
   function makeid(length: number) {
     var result = "";
-    var characters = "abcdefghjklmnpqrstuvwxyz123456789";
+    var characters = "abcdefghjkmnpqrstuvwxyz123456789";
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -210,6 +212,7 @@ const CreateUser = () => {
           value={state.user}
           onChange={handleChange}
           placeholder="Usuario"
+          required
         />
         <div className="containerUserName">
           <input
@@ -219,7 +222,7 @@ const CreateUser = () => {
             value={state.password}
             onChange={handleChange}
             required
-        //     maxLength={5}
+            //     maxLength={5}
             placeholder="Contraseña"
           />
           <HashIcon className="hashIcon" onClick={handleCreateUser} />
@@ -246,6 +249,15 @@ const CreateUser = () => {
           type="datetime-local"
           value={state.date}
           onChange={handleChange}
+        />
+        <input
+          name="screens"
+          className="cellInput"
+          type="number"
+          value={state.screens}
+          onChange={handleChange}
+          min="1"
+          max="4"
         />
         <input className="cellInput submit" type="submit" value="CREAR" />
         <Link className="close" to="/admin/clients">

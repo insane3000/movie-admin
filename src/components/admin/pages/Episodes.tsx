@@ -461,7 +461,7 @@ const Search = () => {
     setSpinner(true);
     axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/episodes-admin/?page=${pageParams}&limit=17&serieID=${params.id}&title=${titleParams}&available=${availableParams}&sortQuery=${sortQueryParams}&ascDesc=${ascDescParams}`,
+        `${process.env.REACT_APP_BACKEND_URL}/episodes-admin/?page=${pageParams}&limit=1000&serieID=${params.id}&title=${titleParams}&available=${availableParams}&sortQuery=${sortQueryParams}&ascDesc=${ascDescParams}`,
         {
           headers: {
             authorization: `Bearer ${app.login.token}`,

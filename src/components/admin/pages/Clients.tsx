@@ -53,7 +53,7 @@ const SearchSt = styled.div`
       position: relative;
       .tRow {
         display: grid;
-        grid-template-columns: calc(20% - 1.2rem) 20% 20% 20% 10% 10%;
+        grid-template-columns: calc(10% - 1.2rem) 20% 10% 20% 10% 10% 10% 10%;
         grid-template-rows: 100%;
         column-gap: 0.2rem;
         justify-content: center;
@@ -166,6 +166,7 @@ interface MovieIT {
   phone: "";
   date: "";
   role: "";
+  screens: "";
 }
 type Movies = [MovieIT];
 const Search = () => {
@@ -205,6 +206,7 @@ const Search = () => {
       })
       .then(function (response: any) {
         setState(response.data);
+        // console.log(response);
       })
       .catch(function (error) {
         console.log(error);
@@ -229,27 +231,60 @@ const Search = () => {
     minute: "2-digit",
     second: "2-digit",
   };
+  //! Remainging Days
+  const daysFunction = (a: any, b: any) => {
+    let day1 = a;
+    let day2 = b;
+
+    let difference = Math.abs(day2 - day1);
+    let result = difference / (1000 * 3600 * 24);
+    return Math.round(result);
+    //     console.log(result);
+  };
   return (
     <SearchSt>
       <div className="table">
         <div className="tRow sticky-top">
-          <div className="cell head">Clave</div>
+          <div className="cell head">Usuario</div>
           <div className="cell head none">Nombre</div>
           <div className="cell head none">Celular</div>
           <div className="cell head">Fecha de vencimiento</div>
-
+          <div className="cell head">Pantallas</div>
+          <div className="cell head">Días restantes</div>
           <div className="cell head">Editar</div>
           <div className="cell head">Borrar</div>
         </div>
         {state?.map((i) => (
           <div className="tRow" key={i._id}>
-            <div className="cell center">{i.user}</div>
-
-            <div className="cell  none">{i.name}</div>
-            <div className="cell  none">{i.phone}</div>
+            <div className="cell ">{i.user}</div>
+            <div className="cell  none" style={{ textTransform: "capitalize" }}>
+              {i.name}
+            </div>
+            <div className="cell  center none">{i.phone}</div>
             <div className="cell center">
               {new Date(i.date).toLocaleDateString("es-ES", options)}
             </div>
+            <div
+              className="cell center  none"
+              style={
+                `${i.screens}` === "1"
+                  ? { background: "#6200FF" }
+                  : `${i.screens}` === "2"
+                  ? { background: "#ff004c" }
+                  : `${i.screens}` === "4"
+                  ? { background: "#ffe600", color: "black" }
+                  : { background: "red" }
+              }
+            >
+              {`${i.screens}` === "1"
+                ? "basic"
+                : `${i.screens}` === "2"
+                ? "standar"
+                : `${i.screens}` === "4"
+                ? "premium"
+                : "error"}
+            </div>
+            <div className="cell center none">{daysFunction(new Date(i.date), new Date())}</div>
             <Link className="cell action-btn" to={`/admin/update-user/${i._id}`}>
               <EditIcon />
             </Link>

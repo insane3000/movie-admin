@@ -478,7 +478,7 @@ const Search = () => {
         setState(response.data.docs);
         setTotalPages(response.data.totalPages);
         setDocs(response.data.totalDocs);
-        console.log(response);
+        // console.log(response);
         setSpinner(false);
       })
       .catch(function (error) {
