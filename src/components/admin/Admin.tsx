@@ -7,6 +7,7 @@ import Media from "components/admin/pages/Media";
 // import Series from "components/admin/pages/Series";
 import Episodes from "components/admin/pages/Episodes";
 import Clients from "components/admin/pages/Clients";
+import Reports from "components/admin/pages/Reports";
 import Backup from "components/admin/pages/Backup";
 
 import AddMedia from "components/admin/organisms/AddMedia";
@@ -18,6 +19,7 @@ import UpdateEpisode from "components/admin/organisms/UpdateEpisode";
 
 import AddClient from "components/admin/organisms/AddClient";
 import UpdateClient from "components/admin/organisms/UpdateClient";
+import Report from "./pages/Report";
 
 const AdminSt = styled.div`
   width: 100%;
@@ -43,6 +45,8 @@ const Admin = () => {
         <Route path="/add-media" element={<AddMedia />} />
         <Route path="/update-media/:id" element={<UpdateMedia />} />
 
+        <Route path="/reports" element={<Reports />} />
+        <Route path="/watch-report/:id" element={<Report />} />
         {/* <Route path="/series" element={<Series />} />
         <Route path="/add-serie" element={<AddSerie />} />
         <Route path="/update-serie/:id" element={<UpdateSerie />} /> */}

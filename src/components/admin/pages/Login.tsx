@@ -226,7 +226,7 @@ const AddProducts = () => {
         localStorage.setItem("user", response.data._id);
         localStorage.setItem("role", response.data.role);
         navigate(`/admin/media`);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(function (error) {
         // console.log(error);

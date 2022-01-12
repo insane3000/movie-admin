@@ -4,10 +4,11 @@ import styled from "styled-components";
 
 // *Icons
 import { MdLocalMovies } from "react-icons/md";
-import { BsCameraVideoFill } from "react-icons/bs";
+import { AiFillMessage } from "react-icons/ai";
 import { FaUserEdit } from "react-icons/fa";
 import { MdBackup } from "react-icons/md";
 import { ImExit } from "react-icons/im";
+
 // *Redux
 import { loginServer } from "redux/actions/appAction";
 const NavigationSt = styled.nav`
@@ -108,6 +109,10 @@ const Navigation = () => {
         <span className="text none">Media</span>
       </NavLink>
 
+      <NavLink className="navLink" to="/admin/reports">
+        <AiFillMessage className="sysIconNav" />
+        <span className="text none">Reportes</span>
+      </NavLink>
       {/* <NavLink className="navLink" to="/admin/series">
         <BsCameraVideoFill className="sysIconNav" />
         <span className="text none">Series</span>
