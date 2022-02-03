@@ -136,6 +136,10 @@ interface User {
   date: string;
   role: string;
   screens: number;
+  imageXL: string;
+  imageL: string;
+  imageM: string;
+  imageS: string;
 }
 const UpdateUser = () => {
   const params = useParams();
@@ -152,6 +156,10 @@ const UpdateUser = () => {
     date: `${formatDate(Date.now())}`,
     role: "user",
     screens: 1,
+    imageXL: "",
+    imageL: "",
+    imageM: "",
+    imageS: "",
   });
   // console.log(state.date);
   //! funcion para formatiear la fecha

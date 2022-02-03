@@ -19,6 +19,7 @@ import { MdLastPage } from "react-icons/md";
 import { IoCloseOutline } from "react-icons/io5";
 import { BsFillPlayFill } from "react-icons/bs";
 import Spinner from "components/Spinner";
+import { AiOutlineAppstoreAdd } from "react-icons/ai";
 const MediaSt = styled.div`
   width: 100%;
   height: 100%;
@@ -59,7 +60,7 @@ const MediaSt = styled.div`
           font-family: "Roboto 900";
           font-size: 2rem;
           color: white;
-          background: #7801e7;
+          background: rgb(89, 1, 231);
           border-style: none;
           outline: none;
           border-radius: 0.3rem;
@@ -84,7 +85,7 @@ const DashboardSt = styled.form`
   align-items: center;
   border-bottom: 0.0625rem solid #333333;
   display: grid;
-  grid-template-columns: 7.5% 10% 10% 19rem calc(62.5% - 27rem) 10%;
+  grid-template-columns: 7.5% 15% 10% 19rem calc(57.5% - 27rem) 10%;
   grid-template-rows: 100%;
   gap: 1rem;
   position: relative;
@@ -180,7 +181,7 @@ const DashboardSt = styled.form`
         justify-content: center;
         align-items: center;
         border-radius: 0.3rem;
-        background: #7801e7;
+        background: #5901e7;
         outline: none;
         border-style: none;
         overflow: hidden;
@@ -201,7 +202,7 @@ const DashboardSt = styled.form`
       }
     }
     .addMedia {
-      background: #7801e7;
+      background: #5901e7;
       border-radius: 0.3rem;
       font-family: "Roboto 900";
       font-size: 1.2rem;
@@ -257,7 +258,7 @@ const TableSt = styled.div`
         cursor: pointer;
       }
       .action-btn {
-        background: #7801e7;
+        background: #5901e7;
       }
     }
     .cell {
@@ -291,7 +292,7 @@ const TableSt = styled.div`
       .afuera {
         /* border: 0.0625rem solid white; */
         border-radius: 0.2rem;
-        width: 10rem;
+        width: 6.25rem;
         height: auto;
         display: none;
         position: absolute;
@@ -314,7 +315,7 @@ const TableSt = styled.div`
     }
 
     .action-btn {
-      background: #7801e7;
+      background: #5901e7;
       cursor: pointer;
       display: flex;
       justify-content: center;
@@ -415,44 +416,46 @@ const Search = () => {
   // !Handle Pagination
   const handlePrevious = (number: number) => {
     navigate(
-      `/admin?page=${
+      `/admin/serie-episodes/${params.id}?page=${
         parseInt(pageState) - number
-      }&folder=${folder}&title=${title}&available=${available}&sortQuery=${sortQuery}&ascDesc=${ascDesc}`
+      }&folder=${folder}&title=${title}&available=${available}&sortQuery=${sortQuery}&ascDesc=${ascDesc}&serieID=${
+        params.id
+      }`
     );
   };
   const handleNext = (number: number) => {
     navigate(
-      `/admin?page=${
+      `/admin/serie-episodes/${params.id}?page=${
         parseInt(pageState) + number
-      }&folder=${folder}&title=${title}&available=${available}&sortQuery=${sortQuery}&ascDesc=${ascDesc}`
+      }&folder=${folder}&title=${title}&available=${available}&sortQuery=${sortQuery}&ascDesc=${ascDesc}&serieID=${
+        params.id
+      }`
     );
   };
   // !Handle Change Folder
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.currentTarget.value;
-    let sortQueryLocal = "title";
-    let ascDescLocal = "asc";
-    setFolder(value);
-    navigate(
-      `/admin?page=1&folder=${value}&title=${title}&available=${available}&sortQuery=${sortQueryLocal}&ascDesc=${ascDescLocal}`
-    );
-  };
+  //   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //     const value = e.currentTarget.value;
+  //     let sortQueryLocal = "title";
+  //     let ascDescLocal = "asc";
+  //     setFolder(value);
+  //     navigate(
+  //       `/admin?page=1&folder=${value}&title=${title}&available=${available}&sortQuery=${sortQueryLocal}&ascDesc=${ascDescLocal}`
+  //     );
+  //   };
   // !Handle Change Available
-  const handleAvailable = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.currentTarget.value;
-    setAvailable(value);
+  //   const handleAvailable = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //     const value = e.currentTarget.value;
+  //     setAvailable(value);
 
-    //     console.log(value);
-    navigate(
-      `/admin?page=1&folder=${folder}&title=${title}&available=${value}&sortQuery=${sortQuery}&ascDesc=${ascDesc}`
-    );
-  };
-  //! Funtion for sorting
-
+  //     //     console.log(value);
+  //     navigate(
+  //       `/admin?page=1&folder=${folder}&title=${title}&available=${value}&sortQuery=${sortQuery}&ascDesc=${ascDesc}`
+  //     );
+  //   };
   // !Fetching Function
   const fetchData = (
     pageParams: any,
-    //     serieIDParams: any,
+    folderParams: any,
     titleParams: any,
     availableParams: any,
     sortQueryParams: any,
@@ -461,7 +464,7 @@ const Search = () => {
     setSpinner(true);
     axios
       .get(
-        `${process.env.REACT_APP_BACKEND_URL}/episodes-admin/?page=${pageParams}&limit=1000&serieID=${params.id}&title=${titleParams}&available=${availableParams}&sortQuery=${sortQueryParams}&ascDesc=${ascDescParams}`,
+        `${process.env.REACT_APP_BACKEND_URL}/episodes-admin?page=${pageParams}&limit=17&folder=${folderParams}&title=${titleParams}&available=${availableParams}&sortQuery=${sortQueryParams}&ascDesc=${ascDescParams}&serieID=${params.id}`,
         {
           headers: {
             authorization: `Bearer ${app.login.token}`,
@@ -474,6 +477,7 @@ const Search = () => {
         setState(response.data.docs);
         setTotalPages(response.data.totalPages);
         setDocs(response.data.totalDocs);
+        // console.log(response);
         setSpinner(false);
         // console.log(response);
       })
@@ -489,14 +493,14 @@ const Search = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const pageParams = params.get("page") ? params.get("page") : 1;
-    //     const folderParams = params.get("folder") ? params.get("folder") : "";
+    const folderParams = params.get("folder") ? params.get("folder") : "";
     const titleParams = params.get("title") ? params.get("title") : "";
     const availableParams = params.get("available") ? params.get("available") : "true";
     const sortQueryParams = params.get("sortQuery") ? params.get("sortQuery") : "createdAt";
     const ascDescParams = params.get("ascDesc") ? params.get("ascDesc") : "desc";
 
     setPageState(pageParams);
-    //     setFolder(folderParams);
+    setFolder(folderParams);
     setTitle(titleParams);
     setAvailable(availableParams);
     setSortQuery(sortQueryParams);
@@ -505,7 +509,7 @@ const Search = () => {
     // !Fetching Data whit params
     fetchData(
       pageParams,
-      //       folderParams,
+      folderParams,
       titleParams,
       availableParams,
       sortQueryParams,
@@ -523,26 +527,11 @@ const Search = () => {
     clearTimeout(timerRef.current);
     if (title.length >= 1) {
       timerRef.current = setTimeout(
-        () =>
-          navigate(`/episodes-admin?page=1&folder=${folder}&title=${value}&available=${available}`),
+        () => navigate(`/admin?page=1&folder=${folder}&title=${value}&available=${available}`),
         500
       );
     }
   };
-  //   const handleSubmit = () => {
-  //     navigate(`/admin?page=1&folder=${folder}&title=${title}`);
-  //   };
-  //   const timerRef = useRef<any>(null);
-  //   useEffect(() => {
-  //     clearTimeout(timerRef.current);
-  //     if (title.length >= 1) {
-  //       timerRef.current = setTimeout(
-  //         () => navigate(`/admin?page=1&folder=${folder}&title=${title}`),
-  //         500
-  //       );
-  //     }
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, [title]);
 
   // !toast
   const deleted = () => toast.success("Borrado.");
@@ -570,9 +559,9 @@ const Search = () => {
     setSortQuery(value);
     let ascDescLocal = ascDesc === "asc" ? "desc" : "asc";
     navigate(
-      `/admin?page=1&folder=${folder}&title=${title}&available=${available}&sortQuery=${value}&ascDesc=${ascDescLocal}`
+      `/admin/serie-episodes/${params.id}?page=1&folder=${folder}&title=${title}&available=${available}&sortQuery=${value}&ascDesc=${ascDescLocal}&serieID=${params.id}`
     );
-    //     console.log(value);
+    console.log(value);
   };
   return (
     <MediaSt>
@@ -585,9 +574,9 @@ const Search = () => {
           <input className="select-arrow inputOnly" type="text" value={docs} readOnly />
         </section>
 
-        <section className="cell-label-input">
+        {/* <section className="cell-label-input">
           <label className="label" htmlFor="genre">
-            Temporada
+            Carpeta
           </label>
           <div className="select-arrow">
             <ArrowRightIcon className="sysIconArrowSelect" />
@@ -599,20 +588,29 @@ const Search = () => {
               onChange={handleChange}
             >
               <option value=" *">Todas</option>
-              <option value=" 1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
+              <option value="estrenos">Estrenos</option>
+              <option value="accion">Acción</option>
+              <option value="animacion">Animación</option>
+              <option value="anime">Anime</option>
+              <option value="aventura">Aventura</option>
+              <option value="belico">Bélico</option>
+              <option value="ciencia-ficcion">Ciencia Ficción</option>
+              <option value="comedia">Comedia</option>
+              <option value="documental">Documental</option>
+              <option value="drama">Drama</option>
+              <option value="fantasia">Fantasia</option>
+              <option value="intriga">Intriga</option>
+              <option value="romance">Romance</option>
+              <option value="terror">Terror</option>
+              <option value="thriller">Thriller</option>
+              <option value="western">Western</option>
+              <option value="series-tv">Series TV</option>
             </select>
           </div>
-        </section>
+        </section> */}
+        <div></div>
 
-        <section className="cell-label-input">
+        {/* <section className="cell-label-input">
           <label className="label" htmlFor="genre">
             Disponible
           </label>
@@ -629,7 +627,8 @@ const Search = () => {
               <option value="false">No</option>
             </select>
           </div>
-        </section>
+        </section> */}
+        <div></div>
 
         <section className="cell-label-input">
           <label className="label" htmlFor="">
@@ -703,7 +702,6 @@ const Search = () => {
           </section>
         </section>
 
-        <div></div>
         {/* <section className="cell-label-input">
           <label className="label">Buscar</label>
           <input
@@ -713,6 +711,7 @@ const Search = () => {
             onChange={handleSearch}
           />
         </section> */}
+        <div></div>
 
         <section className="cell-label-input">
           <label className="label" htmlFor="genre"></label>
@@ -726,7 +725,7 @@ const Search = () => {
           <div
             className="cell head sort"
             onClick={() => sortQueryFunction("createdAt")}
-            style={sortQuery === "createdAt" ? { background: "#7801e7" } : { background: "black" }}
+            style={sortQuery === "createdAt" ? { background: "#5901E7" } : { background: "black" }}
           >
             #
           </div>
@@ -734,21 +733,23 @@ const Search = () => {
           <div
             className="cell head sort"
             onClick={() => sortQueryFunction("title")}
-            style={sortQuery === "title" ? { background: "#7801e7" } : { background: "black" }}
+            style={sortQuery === "title" ? { background: "#5901E7" } : { background: "black" }}
           >
             Temporada
           </div>
-          <div className="cell head">Episodio</div>
           <div className="cell head" title="Disponible">
+            Episodio
+          </div>
+          <div className="cell head" title="Calificación">
             Disponible
           </div>
-
+          {/* <div className="cell head">Carpeta</div> */}
           <div className="cell head">URL</div>
           <div className="cell head">Ver</div>
           <div className="cell head">Editar</div>
           <div className="cell head">Borrar</div>
         </div>
-        {state?.map((i, index) => (
+        {state?.map((i) => (
           <div className="tRow" key={i._id}>
             <div className="cell image-container">
               <img
@@ -760,53 +761,17 @@ const Search = () => {
                 className="afuera"
                 src={`${process.env.REACT_APP_BACKEND_URL}/static/episodes/${i.imageS}`}
                 alt=""
-                // style={
-                //   index === 15
-                //     ? { bottom: "-1.75rem" }
-                //     : index === 16
-                //     ? { bottom: "0" }
-                //     : { top: "auto", bottom: "auto" }
-                // }
               />
             </div>
-            {/* <div className="cell text-align-center"> {i.imageS}</div> */}
-            <div
-              className="cell "
-              //       style={
-              //         i.season.substring(0, 3) ===
-              //         decodeURI(i.link).substring(39 + i.folder.length, 42 + i.folder.length)
-              //           ? { color: "#00ffb3" }
-              //           : { color: "#ff004c" }
-              //       }
-            >
-              Temporada: {i.season}
-              {/* {i.link.substring(39 + i.folder.length, 42 + i.folder.length)} */}
-              {/* {i.title.substring(0, 3)} */}
-            </div>
-
-            <div className="cell">Episodio: {i.episode}</div>
-
+            <div className="cell ">Temporada: {i.season}</div>
+            <div className="cell center">Episodio: {i.episode}</div>
             <div className="cell center" style={i.available ? { color: "lime" } : { color: "red" }}>
+              {" "}
               {i.available ? "Si" : "No"}
             </div>
-            {/* <div
-              className="cell"
-              style={i.rating === 0 ? { color: "#ff004c" } : { color: "white" }}
-            >
-              {i.rating}
-            </div> */}
-            {/* <div
-              className="cell "
-              style={
-                i.folder === i.link.substring(38, 38 + i.folder.length)
-                  ? { color: "#00ffb3" }
-                  : { color: "#ff004c" }
-              }
-            >
-              {i.folder}
-            </div> */}
-            <div className="cell ">{decodeURI(i.link).substring(34, i.link.length)}</div>
-
+            <div className="cell ">
+              {decodeURIComponent(i.link.trim()).substring(34, i.link.length)}
+            </div>
             <span
               className="cell action-btn"
               onClick={() => {

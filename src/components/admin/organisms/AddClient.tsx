@@ -134,6 +134,10 @@ interface User {
   date: string;
   role: string;
   screens: number;
+  imageXL: string;
+  imageL: string;
+  imageM: string;
+  imageS: string;
 }
 const CreateUser = () => {
   let navigate = useNavigate();
@@ -147,6 +151,10 @@ const CreateUser = () => {
     date: `${formatDate(Date.now())}`,
     role: "user",
     screens: 1,
+    imageXL: "",
+    imageL: "",
+    imageM: "",
+    imageS: "",
   });
   //! funcion para formatiear la fecha
   function formatDate(data: number) {

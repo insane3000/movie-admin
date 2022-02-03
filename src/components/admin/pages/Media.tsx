@@ -785,7 +785,7 @@ const Search = () => {
               style={
                 `${i.link}` !== ""
                   ? i.title.substring(0, 3) ===
-                    decodeURI(i.link).substring(39 + i.folder.length, 42 + i.folder.length)
+                  decodeURIComponent(i.link).substring(39 + i.folder.length, 42 + i.folder.length)
                     ? { color: "#00ffb3" }
                     : { color: "#ff004c" }
                   : { color: "#ffee00" }
@@ -817,7 +817,7 @@ const Search = () => {
               {i.folder}
             </div>
             <div className="cell ">
-              {`${i.link}` === "" ? `` : decodeURI(i.link).substring(34, i.link.length)}
+              {`${i.link}` === "" ? `` : decodeURIComponent(i.link).substring(34, i.link.length)}
             </div>
 
             {`${i.type}` === "movie" ? (
