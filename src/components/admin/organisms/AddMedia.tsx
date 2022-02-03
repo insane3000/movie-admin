@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { StoreInterface } from "interfaces/storeTemplate";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import Spinner from "components/Spinner";
 const SearchSt = styled.div`
   width: 100%;
   height: 100%;
@@ -16,6 +17,7 @@ const SearchSt = styled.div`
     justify-content: start;
     align-items: center;
     overflow-y: scroll;
+    position: relative;
     .title {
       text-align: center;
       color: white;
@@ -225,7 +227,8 @@ const Search = () => {
   const [available, setAvailable] = useState<any>(true);
   const [type, setType] = useState("movie");
   // const [alertImg, setAlertImg] = useState<any>(false);
-
+  //!Spinner
+  const [spinner, setSpinner] = useState(false);
   //   console.log(language);
 
   // !Handle Change file
@@ -301,6 +304,7 @@ const Search = () => {
   // console.log(available);
   // !Handle Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setSpinner(true);
     e.preventDefault();
     let formData = new FormData();
 
@@ -332,6 +336,7 @@ const Search = () => {
         if (response.statusText === "OK") {
           navigate(-1);
           saved();
+          setSpinner(false);
         }
       });
   };
@@ -533,6 +538,7 @@ const Search = () => {
           </button>
         </div>
       </form>
+      {spinner && <Spinner />}
     </SearchSt>
   );
 };
