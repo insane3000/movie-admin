@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { StoreInterface } from "interfaces/storeTemplate";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import Spinner from "components/Spinner";
 const SearchSt = styled.div`
   width: 100%;
   height: 100%;
@@ -16,6 +17,7 @@ const SearchSt = styled.div`
     justify-content: start;
     align-items: center;
     overflow-y: scroll;
+    position: relative;
     .title {
       text-align: center;
       color: white;
@@ -217,6 +219,8 @@ const Search = () => {
   const [link, setLink] = useState("");
   const [available, setAvailable] = useState<any>(true);
 
+  //!Spinner
+  const [spinner, setSpinner] = useState(false);
   // !Handle Change inputs
   const handleLatino = (e: React.ChangeEvent<HTMLSelectElement>) => {
     let value = e.currentTarget.value;
@@ -240,11 +244,12 @@ const Search = () => {
   };
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.currentTarget.files?.[0];
-//     console.log(value);
+    //     console.log(value);
     setFile(value);
   };
   // !Handle Submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setSpinner(true);
     e.preventDefault();
     let formData = new FormData();
     formData.append("serieID", `${params.id}`);
@@ -271,6 +276,7 @@ const Search = () => {
         if (response.statusText === "OK") {
           navigate(-1);
           saved();
+          setSpinner(false);
         }
       });
   };
@@ -366,6 +372,7 @@ const Search = () => {
           </button>
         </div>
       </form>
+      {spinner && <Spinner />}
     </SearchSt>
   );
 };
